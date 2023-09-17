@@ -50,7 +50,7 @@
         }
 
         .image-link:hover {
-            transform: scale(1.05); /* Increase the size a bit on hover */
+            transform: scale(1.05);
         }
         .tabs {
             display: flex;
@@ -69,8 +69,6 @@
         .tab:hover {
             background-color: #ddd;
         }
-
-        /* Style for the tab content */
         .tab-content {
             display: none;
             padding: 20px;
@@ -133,30 +131,28 @@
             font-size: 150%;
         }
         .fact-content {
-            clear: both; /* Ensure each fact starts on a new line */
+            clear: both;
         }
 
         .fact-image {
-            float: left; /* Float the image to the left of the text */
-            margin-right: 20px; /* Add some margin to create spacing between image and text */
+            float: left;
+            margin-right: 20px;
         }
 
         .fact-text {
-            text-align: justify; /* Justify the text to make it align properly */
+            text-align: justify;
         }
-
-        /* Apply text flow behavior only to fact pairings with the flow-text-around-image class */
         .flow-text-around-image .fact-image {
-            float: left; /* Float the image to the left of the text */
-            margin-right: 20px; /* Add some margin to create spacing between image and text */
+            float: left;
+            margin-right: 20px;
         }
         .reverse-fact-image-text .fact-content {
             clear: both;
         }
 
         .reverse-fact-image-text .fact-image {
-            float: right; /* Float the image to the right of the text */
-            margin-left: 20px; /* Add some margin to create spacing between image and text */
+            float: right;
+            margin-left: 20px;
         }
     </style>
 </head>
@@ -263,13 +259,12 @@
     </div>
     <div id="facts-content" class="tab-content">
         <h2>Analytics</h2>
-        <!-- First Fact (odd) -->
         <div class="fact-introduction">
             <p align="justify">This analysis was conducted by using a database of 7854 listings on Airbnb from 2019. After removing outliers/data errors there remained 6984 listings on which the following analysis is based.</p>
         </div>
         <h2>Descriptive Statistics</h2>
         <div class="fact odd">
-            <br> <!-- Line break here -->
+            <br>
             <div class="fact-text">
                 <p><b>Price Distribution</b><br> The prices average at around SEK1000 per night. There are more listings under the average, however the upper tail is longer which shows that there are still a few expensive listings. In other words, cheaper accommodations are more common, but there are a few quite expensive ones. </p>
             </div>
@@ -277,9 +272,8 @@
                 <img src="static\Price distribution.png" alt="Fact Image" width="700">
             </div>
         </div>
-        <!-- Second Fact (even) -->
         <div class="fact even">
-            <br> <!-- Line break here -->
+            <br>
             <div class="fact-text">
                 <p><b>More expensive in the city centre<br></b>As you can see from the map on the left, the more central a neighbourhood is, the more expensive are the listings (with the exception of Älvsjö). The most expensive was Norrmalm with Södermalm following closely behind. On average, one can expect to pay more than 1000 crowns per night to stay at an accommodation there. On the end of the scale, we have Vällingby-Hässelby, where the nightly rate is 616.</p>
             </div>
@@ -288,7 +282,7 @@
             </div>
         </div>
         <div class="fact odd">
-            <br> <!-- Line break here -->
+            <br>
             <div class="fact-text">
                 <p><b>Most listings are in Södermalm</b><br> Similar to the prices, the majority of the listings are in the city centre, Södermalm hosting the vast majority of them. This might be because it is close to several tourist points of interest: Gamla Stan, the Stockholm Palace, the Vasa Museum and Skansen (both accessible through ferry), etc.</p>
                 <p>Whilst Norrmalm has the highest prices, it only has around half of the number of listings as Södermalm. This may be because houses are more luxurious in Norrmalm or because of the laws of supply and demand: fewer houses, higher prices.</p>
@@ -298,7 +292,7 @@
             </div>
         </div>
         <div class="fact even">
-            <br> <!-- Line break here -->
+            <br>
             <div class="fact-text">
                 <p><b>Kitchens and Wifi are expected</b><br> Out of all the relevant amenities, wi-fi, a kitchen, heating and to a lesser extent a tv were the most common for an accommodation to offer. At the same time, a pool, free street parking and air conditioning were the rarest. This might say more about the characteristics of housing in Stockholm, rather than what is popular among consumers. </p>
             </div>
@@ -323,7 +317,7 @@
         <h3>The Results</h3>
             <p> For better visibility, the results are divided in the above three categories. The R2 of the regression was 0.52 which indicates that we are able to predict 52% of the changes in price by the changes in the predictors</p>
         <div class="fact odd">
-            <br> <!-- Line break here -->
+            <br>
             <div class="fact-text">
                 <p><b>How much the number of rooms affects housing prices</b><br> From the regression results, we can see that for each bedroom that a listing offers, prices will go up by around 20%, on average. For each bathroom, this number is around 9%, if we keep all else equal. </p>
                 <p>More interesting than the number of bedroom/bathrooms, would be the size of the accommodation. Sadly, this statistic was not present in the sample.</p>
@@ -333,7 +327,7 @@
             </div>
         </div>
         <div class="fact odd flow-text-around-image">
-            <br> <!-- Line break here -->
+            <br>
             <div class="fact-content">
                 <div class="fact-image">
                     <img src="static\reg_sum2.png" alt="Fact Image" width="700">
@@ -344,7 +338,7 @@
             </div>
         </div>
         <div class="fact even reverse-fact-image-text">
-            <br> <!-- Line break here -->
+            <br>
             <div class="fact-content">
                 <div class="fact-image">
                     <img src="static\reg_sum3.png" alt="Fact Image" width="700">
@@ -355,7 +349,7 @@
             </div>
         </div>
         <div class="fact odd">
-            <br> <!-- Line break here -->
+            <br>
             <div class="fact-text">
                 <p><b>How much the number of rooms affects housing prices</b><br> Finally, when looking at the type of housing, we cannot say that there is a statistically significant difference in price between private rooms (in a bigger accommodation) and a whole home/apartment. We can, however, say that shared rooms are around 40% cheaper than non-shared ones. </p>
             </div>
@@ -401,8 +395,6 @@
                 imageLink.classList.add('image-link');
                 imageLink.innerHTML = '<img src="static/stadsdelsomrade.jpg" alt="Stockholm divisions" width="400">'; // Change width to 400
                 imageContainer.appendChild(imageLink);
-
-                // Reattach the event listener to the new image link
                 imageLink.addEventListener('click', function () {
                     document.getElementById('openLightbox').remove();
                     document.getElementById('lightbox').style.display = 'flex';
@@ -410,19 +402,15 @@
             }
         });
         function openTab(tabName) {
-            // Get all tab content elements
+
             var tabContents = document.getElementsByClassName("tab-content");
             
-            // Hide all tab contents
             for (var i = 0; i < tabContents.length; i++) {
                 tabContents[i].style.display = "none";
             }
 
-            // Show the selected tab content
             document.getElementById(tabName + "-content").style.display = "block";
         }
-
-        // By default, open the Calculator tab
         openTab("calculator");
     </script>
 </body>
