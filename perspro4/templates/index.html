@@ -1,0 +1,429 @@
+<html>
+<head>
+    <title>Nightly Rate Calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://kit.fontawesome.com/3a9609a2fa.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <style>
+        .checkbox-column {
+            display: inline-block;
+            vertical-align: top;
+            margin-right: 20px;
+        }
+        .container {
+            display: flex;
+            align-items: center;
+        }
+
+        .calculator {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .image {
+            position: absolute;
+            top: 70px;
+            left: 750px;
+        }
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-image {
+            max-width: 80%;
+            max-height: 80%;
+        }
+        .image-link {
+            display: inline-block;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .image-link:hover {
+            transform: scale(1.05); /* Increase the size a bit on hover */
+        }
+        .tabs {
+            display: flex;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            background-color: #f2f2f2;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .tab:hover {
+            background-color: #ddd;
+        }
+
+        /* Style for the tab content */
+        .tab-content {
+            display: none;
+            padding: 20px;
+        }
+        .active {
+            display: block;
+        }
+        .fact.odd {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .fact.even {
+            display: flex;
+            margin-bottom: 20px;
+            flex-direction: row-reverse;
+        }
+
+        .fact-subtitle {
+            font-weight: bold;
+            width: 200px;
+        }
+
+        .fact-text {
+    text-align: justify;
+        }
+
+        .fact-image {
+            flex: 1;
+        }
+        .fact-subtitle {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .fact.odd .fact-image {
+            order: 2;
+        }
+        .fact.even .fact-image {
+            order: 1;
+        }
+        body {
+            font-size: 150%;
+        }
+        h1, h2 {
+            font-size: 200%;
+        }
+        h3 {
+            font-size: 150%;
+        }
+        p {
+            font-size: 150%;
+        }
+        .larger-element {
+            font-size: 150%;
+        }
+        ol {
+            font-size: 150%;
+        }
+        .mjx-math {
+            font-size: 150%;
+        }
+        .fact-content {
+            clear: both; /* Ensure each fact starts on a new line */
+        }
+
+        .fact-image {
+            float: left; /* Float the image to the left of the text */
+            margin-right: 20px; /* Add some margin to create spacing between image and text */
+        }
+
+        .fact-text {
+            text-align: justify; /* Justify the text to make it align properly */
+        }
+
+        /* Apply text flow behavior only to fact pairings with the flow-text-around-image class */
+        .flow-text-around-image .fact-image {
+            float: left; /* Float the image to the left of the text */
+            margin-right: 20px; /* Add some margin to create spacing between image and text */
+        }
+        .reverse-fact-image-text .fact-content {
+            clear: both;
+        }
+
+        .reverse-fact-image-text .fact-image {
+            float: right; /* Float the image to the right of the text */
+            margin-left: 20px; /* Add some margin to create spacing between image and text */
+        }
+    </style>
+</head>
+<body>
+    <ul class="tabs">
+        <li class="tab" onclick="openTab('calculator')">Calculator</li>
+        <li class="tab" onclick="openTab('facts')">Analysis</li>
+    </ul>
+    <div id="calculator-content" class="tab-content active">
+        <div class="calculator">
+            <h1>Nightly Rate Calculator</h1>
+            <form action="/calculate" method="POST">
+                <label for="number1">Enter the number of bedrooms: </label>
+                <input type="number" name="number1" step="any" required>
+                <br>
+                <br>
+                <label for="number2">Enter the number of bathrooms: </label>
+                <input type="number" name="number2" step="any" required>
+                <br>
+                <label for="housing_type">Select the type of housing you are renting:</label>
+                <select name="housing_type" id="housing_type">
+                    <option value="" disabled selected>Housing Type</option>
+                    <option value="0">Private Room</option>
+                    <option value="0">Entire home/apt</option>
+                    <option value="-0.501343">Shared Room</option>
+                    <option value="0">Hotel Room</option>
+                </select>
+                <br>
+                <label for="neighbourhood">Where is the property located?</label>
+                <select name="neighbourhood" id="neighbourhood">
+                    <option value="" disabled selected>Neighbourhood/Stadsdelsområde</option>
+                    <option value="0.241982">Bromma</option>
+                    <option value="0.249373">Enskede-Årsta-Vantörs</option>
+                    <option value="0.168482">Farsta</option>
+                    <option value="0.271416">Hägersten-Liljeholmen</option>
+                    <option value="0">Hässelby-Vällingby</option>
+                    <option value="0.506395">Kungsholmen</option>
+                    <option value="0.599338">Norrmalm</option>
+                    <option value="0.271415">Rinkeby-Kista</option>
+                    <option value="0.265978">Skarpnäck</option>
+                    <option value="0.106947">Skärholmen</option>
+                    <option value="0">Spånga-Tensta</option>
+                    <option value="0.618377">Södermalm</option>
+                    <option value="0.276073">Älvsjö</option>
+                    <option value="0.562270">Östermalm</option>
+                </select>
+                <br>
+                <p><em>Amenities</em></p>
+                <p>What amenities does your apartment provide?</p>
+                <div id="checkboxGrid">
+                    <div class="checkbox-column">
+                        <input type="checkbox" name="checkbox_value" value="-0.0518" id="checkbox_1">
+                        <label for="checkbox_1"><span class="icon"><i class="fa-solid fa-kitchen-set"></i></span> Kitchen</label><br>
+                        <input type="checkbox" name="checkbox_value" value="0.128334" id="checkbox_1">
+                        <label for="checkbox_1"><span class="icon"><i class="fa-solid fa-fire"></i></span> Indoor Fireplace</label><br>
+                        <input type="checkbox" name="checkbox_value" value="0" id="checkbox_1">
+                        <label for="checkbox_1"><span class="icon"><i class="fa-solid fa-wheelchair"></i></span> Wheelchair Accessible</label><br>
+                        <input type="checkbox" name="checkbox_value" value="-0.055779" id="checkbox_1">
+                        <label for="checkbox_1"><span class="icon"><i class="fa-solid fa-car"></i></span> Free Street Parking</label><br>
+                    </div>
+                    <div class="checkbox-column">
+                        <input type="checkbox" name="checkbox_value" value="0" id="checkbox_1">
+                        <label for="checkbox_1"><span class="icon"><i class="fa-solid fa-person-swimming"></i></span> Pool</label><br>
+                        <input type="checkbox" name="checkbox_value" value="0" id="checkbox_1">
+                        <label for="checkbox_1"><span class="icon"><i class="fa-solid fa-wifi"></i></span> Wi-fi</label><br>
+                        <input type="checkbox" name="checkbox_value" value="-0.048946" id="checkbox_1">
+                        <label for="checkbox_1"><span class="icon"><i class="fa-solid fa-paw"></i></span> Pets Allowed</label><br>
+                        <input type="checkbox" name="checkbox_value" value="0.111198" id="checkbox_1">
+                        <label for="checkbox_1"><span class="icon"><i class="fa-solid fa-tv"></i></span> Tv</label><br>
+                    </div>
+                    <div class="checkbox-column">
+                        <input type="checkbox" name="checkbox_value" value="0" id="checkbox_1">
+                        <label for="checkbox_1"><span class="icon"><i class="fa-solid fa-temperature-arrow-up"></i></span> Heating</label><br>
+                        <input type="checkbox" name="checkbox_value" value="0" id="checkbox_1">
+                        <label for="checkbox_1"><span class="icon"><i class="fa-solid fa-temperature-arrow-down"></i></span> Airconditioning</label><br>
+                        <input type="checkbox" name="checkbox_value" value="0.038536" id="checkbox_1">
+                        <label for="checkbox_1"><span class="icon"><i class="fa-solid fa-fire-extinguisher"></i></i></span> Fire Extinguisher</label><br>
+                        <input type="checkbox" name="checkbox_value" value="0.035541" id="checkbox_1">
+                        <label for="checkbox_1"><span class="icon"><i class="fa-solid fa-triangle-exclamation"></i></span> Carbon Monoxyde Detector</label><br>
+                    </div>
+                    <div class="checkbox-column">
+                        <input type="checkbox" name="checkbox_value" value="0.033400" id="checkbox_1">
+                        <label for="checkbox_1"><span class="icon"><i class="fa-solid fa-bed"></i></span> Longterm Stays Allowed</label><br>
+                        <input type="checkbox" name="checkbox_value" value="0" id="checkbox_1">
+                        <label for="checkbox_1"><span class="icon"><i class="fa-solid fa-mattress-pillow"></i></span> Extra Pillows and Blankets</label><br>
+                        <input type="checkbox" name="checkbox_value" value="0" id="checkbox_1">
+                        <label for="checkbox_1"><span class="icon"><i class="fa-solid fa-tree"></i></span> Backyard</label><br>
+                        <input type="checkbox" name="checkbox_value" value="0" id="checkbox_1">
+                        <label for="checkbox_1"><span class="icon"><i class="fa-solid fa-fish"></i></span> Sea View</label><br>
+                    </div>
+                </div>
+                <br>
+                <button type="submit" id="calculateBtn" disabled>Calculate</button>
+            </form>
+        </div>
+        <div class="lightbox" id="lightbox">
+            <img class="lightbox-image" src="static\stadsdelsomrade.jpg" alt="Stockholm divisions">
+        </div>
+        <div class="image">
+            <a href="#" id="openLightbox" class="image-link">
+                <img src="static\stadsdelsomrade.jpg" alt="Stockholm divisions" width="400">
+            </a>
+        </div>    
+    </div>
+    <div id="facts-content" class="tab-content">
+        <h2>Analytics</h2>
+        <!-- First Fact (odd) -->
+        <div class="fact-introduction">
+            <p align="justify">This analysis was conducted by using a database of 7854 listings on Airbnb from 2019. After removing outliers/data errors there remained 6984 listings on which the following analysis is based.</p>
+        </div>
+        <h2>Descriptive Statistics</h2>
+        <div class="fact odd">
+            <br> <!-- Line break here -->
+            <div class="fact-text">
+                <p><b>Price Distribution</b><br> The prices average at around SEK1000 per night. There are more listings under the average, however the upper tail is longer which shows that there are still a few expensive listings. In other words, cheaper accommodations are more common, but there are a few quite expensive ones. </p>
+            </div>
+            <div class="fact-image">
+                <img src="static\Price distribution.png" alt="Fact Image" width="700">
+            </div>
+        </div>
+        <!-- Second Fact (even) -->
+        <div class="fact even">
+            <br> <!-- Line break here -->
+            <div class="fact-text">
+                <p><b>More expensive in the city centre<br></b>As you can see from the map on the left, the more central a neighbourhood is, the more expensive are the listings (with the exception of Älvsjö). The most expensive was Norrmalm with Södermalm following closely behind. On average, one can expect to pay more than 1000 crowns per night to stay at an accommodation there. On the end of the scale, we have Vällingby-Hässelby, where the nightly rate is 616.</p>
+            </div>
+            <div class="fact-image">
+                <img src="static\STO_prices.png" alt="Another Fact Image" width="700">
+            </div>
+        </div>
+        <div class="fact odd">
+            <br> <!-- Line break here -->
+            <div class="fact-text">
+                <p><b>Most listings are in Södermalm</b><br> Similar to the prices, the majority of the listings are in the city centre, Södermalm hosting the vast majority of them. This might be because it is close to several tourist points of interest: Gamla Stan, the Stockholm Palace, the Vasa Museum and Skansen (both accessible through ferry), etc.</p>
+                <p>Whilst Norrmalm has the highest prices, it only has around half of the number of listings as Södermalm. This may be because houses are more luxurious in Norrmalm or because of the laws of supply and demand: fewer houses, higher prices.</p>
+            </div>
+            <div class="fact-image">
+                <img src="static\STO_count.png" alt="Fact Image" width="700">
+            </div>
+        </div>
+        <div class="fact even">
+            <br> <!-- Line break here -->
+            <div class="fact-text">
+                <p><b>Kitchens and Wifi are expected</b><br> Out of all the relevant amenities, wi-fi, a kitchen, heating and to a lesser extent a tv were the most common for an accommodation to offer. At the same time, a pool, free street parking and air conditioning were the rarest. This might say more about the characteristics of housing in Stockholm, rather than what is popular among consumers. </p>
+            </div>
+            <div class="fact-image">
+                <img src="static\amenities.png" alt="Fact Image" width="700">
+            </div>
+        </div>
+        <h2> Regression Analysis</h2>
+        <div class="fact-introduction">
+            <p>The calculator uses the coefficients from a regression to ascertain the nightly rate of a listing based on its characteristics.</p>
+            <p>There are three types of variables:</p>
+            <ol>
+                <li>The number of bedrooms and bathrooms</li>
+                <li>The amenities it offers</li>
+                <li>The type of housing</li>
+                <li>Where the apartment is located</li>
+              </ol>
+            <p>It uses a log-lin specification since prices (what is to be predicted) are given in the thousands-dimension (read 4 digits) but the predictors are small, one-digit numbers (the number of bathrooms/bedrooms) or dummy variables which take either the value of 1 or 0.</p>
+            <p>Concerning the type of housing, this can be either a shared room, a room in an apartment, a whole apartment or a hotel-experience. All this is given in the ad by the owner/host.</p>
+            <p>All listings are within Stockholm's municipality. It uses the city divisions from 2019.</p>
+        </div>
+        <h3>The Results</h3>
+            <p> For better visibility, the results are divided in the above three categories. The R2 of the regression was 0.52 which indicates that we are able to predict 52% of the changes in price by the changes in the predictors</p>
+        <div class="fact odd">
+            <br> <!-- Line break here -->
+            <div class="fact-text">
+                <p><b>How much the number of rooms affects housing prices</b><br> From the regression results, we can see that for each bedroom that a listing offers, prices will go up by around 20%, on average. For each bathroom, this number is around 9%, if we keep all else equal. </p>
+                <p>More interesting than the number of bedroom/bathrooms, would be the size of the accommodation. Sadly, this statistic was not present in the sample.</p>
+            </div>
+            <div class="fact-image">
+                <img src="static\reg_sum1.png" alt="Fact Image" width="700">
+            </div>
+        </div>
+        <div class="fact odd flow-text-around-image">
+            <br> <!-- Line break here -->
+            <div class="fact-content">
+                <div class="fact-image">
+                    <img src="static\reg_sum2.png" alt="Fact Image" width="700">
+                </div>
+                <div class="fact-text">
+                    <p><b>Unconcise effect of amenities in the price</b><br> The effect of amenities on price is complex: some amenities seem to be associated with higher prices, other with lower, and other do not seem to affect it. One could make the argument that the reason why “Pets allowed” is associated with a lower price is that more luxurious accommodations are less likely to allow pets to avoid possible damages. Another reason why some of these relationships seem unintuitive is that if tourists are the ones that use Airbnb the most, these tourists might spend their whole days visiting the city. This means that they will not need a kitchen—they eat at a restaurant. They probably flew into Sweden and do not need a spot to park their cars and will rely on public transportation. In a way, these results may say more about the behaviour of visitors, rather than the listings themselves.</p>
+                </div>
+            </div>
+        </div>
+        <div class="fact even reverse-fact-image-text">
+            <br> <!-- Line break here -->
+            <div class="fact-content">
+                <div class="fact-image">
+                    <img src="static\reg_sum3.png" alt="Fact Image" width="700">
+                </div>
+                <div class="fact-text">
+                    <p><b>The city centre is still more expensive when adjusting for other factors</b><br> Whilst we have the average price of the listings in each neighbourhood above, regression analysis allows us to adjust for other factors. For instance, as we saw before, an indoor fireplace is associated with more expensive listings. If a certain neighbourhood is more likely to have housing with a fireplace, that neighbourhood will be more expensive not because where it is but because of the amenity. Nevertheless, the analysis made in the descriptive statistics section does not become obsolete as the regression saw similar results: listings in the city centre are more expensive than those in the periphery.</p>
+                </div>
+            </div>
+        </div>
+        <div class="fact odd">
+            <br> <!-- Line break here -->
+            <div class="fact-text">
+                <p><b>How much the number of rooms affects housing prices</b><br> Finally, when looking at the type of housing, we cannot say that there is a statistically significant difference in price between private rooms (in a bigger accommodation) and a whole home/apartment. We can, however, say that shared rooms are around 40% cheaper than non-shared ones. </p>
+            </div>
+            <div class="fact-image">
+                <img src="static\reg_sum4.png" alt="Fact Image" width="700">
+            </div>
+        </div>
+        <h2> How the calculator works</h2>
+        <p align="justify">The calculator takes in the coefficients of the regression and uses them to calculate the nightly rate. It starts at the intercept of 5.6 and adds the number of rooms and bathrooms multiplied by the respective coefficient (0.18 and 0.08). It then adds the coefficient for the type of housing (often zero unless the listing is a shared apartment) and for the neighbourhood. Finally, it adds all the coefficients for the selected amenities. </p>
+        <p align="justify">Since this is a log-lin regression, it then takes the exponential of that number. That is the estimated price for the listing in 2019. However, four years have passed since then, and housing prices have gone up. I could not find a representative 2023 sample: the one I have only contains 360 rows. However, I used that sample to calculate, on average, by how much nightly rates have gone up. Specifically, that is 90% since the average listing cost 946,4 crowns in 2019 and 1799,64 in 2023. As such, the best way to reach a 2023 number is to multiply the 2019 price by 1,9 to have its approximation of a 2023 price.</p>
+        <p align="justify">Here is the calculation of the nightly rate of a 2 bedroom, 1 bathroom entire apartment with a kitchen and wi-fi in Kungsholmen. </p>
+        <div class="fact-image">
+            <img src="static\Equation.png" alt="Fact Image" width="700">
+        </div>
+    </div>
+    <script>
+        const additionalValue1 = document.getElementById('housing_type');
+        const additionalValue2 = document.getElementById('neighbourhood');
+        const calculateBtn = document.getElementById('calculateBtn');
+
+        additionalValue1.addEventListener('change', toggleCalculateButton);
+        additionalValue2.addEventListener('change', toggleCalculateButton);
+
+        function toggleCalculateButton() {
+            if (additionalValue1.value === "" || additionalValue2.value === "") {
+                calculateBtn.disabled = true;
+            } else {
+                calculateBtn.disabled = false;
+            }
+        }
+        document.getElementById('openLightbox').addEventListener('click', function () {
+    document.getElementById('openLightbox').remove();
+    document.getElementById('lightbox').style.display = 'flex';
+});
+
+        document.getElementById('lightbox').addEventListener('click', function (event) {
+            if (event.target === this) {
+                this.style.display = 'none';
+                const imageContainer = document.querySelector('.image');
+                const imageLink = document.createElement('a');
+                imageLink.id = 'openLightbox';
+                imageLink.href = '#';
+                imageLink.classList.add('image-link');
+                imageLink.innerHTML = '<img src="static/stadsdelsomrade.jpg" alt="Stockholm divisions" width="400">'; // Change width to 400
+                imageContainer.appendChild(imageLink);
+
+                // Reattach the event listener to the new image link
+                imageLink.addEventListener('click', function () {
+                    document.getElementById('openLightbox').remove();
+                    document.getElementById('lightbox').style.display = 'flex';
+                });
+            }
+        });
+        function openTab(tabName) {
+            // Get all tab content elements
+            var tabContents = document.getElementsByClassName("tab-content");
+            
+            // Hide all tab contents
+            for (var i = 0; i < tabContents.length; i++) {
+                tabContents[i].style.display = "none";
+            }
+
+            // Show the selected tab content
+            document.getElementById(tabName + "-content").style.display = "block";
+        }
+
+        // By default, open the Calculator tab
+        openTab("calculator");
+    </script>
+</body>
+</html>
